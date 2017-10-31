@@ -124,22 +124,29 @@ function ready(chrRead, chrWrite) {
 			uart.tx.write(data, true); // write without response
 		});
 
+		client.on("listening", function() {
+			const address = client.address();
+			console.log("Listening to ${address.address}:${address.port}");
+		});
+
+		client.bind(settings.PORT);
+
 		uart.rx.notify(true);
 		uart.rx.on('data', writeToUdp(client))
 
-		net.createServer(function(sock) {
+		/*net.createServer(function(sock) {
 
 	    	console.log("connected [" + sock.remoteAddress + ":" + sock.remotePort + "]");
 
-	    	sock.on('data', writeToBT)
-				sock.on('close', function(data) {
-	        			console.log("closed [" + sock.remoteAddress + ":" + sock.remotePort + "]");
-								connections.splice(connections.indexOf(sock), 1);
-				});
+	    	sock.on('data', writeToBT);
+			sock.on('close', function(data) {
+        			console.log("closed [" + sock.remoteAddress + ":" + sock.remotePort + "]");
+							connections.splice(connections.indexOf(sock), 1);
+			});
 
 			connections.push(sock)
 
-		}).listen(settings.PORT, settings.HOST);
+		}).listen(settings.PORT, settings.HOST);*/
 }
 
 noble.on('stateChange', function(state) {
